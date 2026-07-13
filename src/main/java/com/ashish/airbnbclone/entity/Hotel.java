@@ -3,7 +3,6 @@ package com.ashish.airbnbclone.entity;
 import jakarta.persistence.Column;
 import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
-import jakarta.persistence.ManyToOne;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.JdbcTypeCode;
@@ -18,9 +17,11 @@ public class Hotel extends BaseEntity {
 
     private String city;
 
+    @JdbcTypeCode(SqlTypes.JSON)
     @Column(columnDefinition = "TEXT[]")
     private String[] photos;
 
+    @JdbcTypeCode(SqlTypes.JSON)
     @Column(columnDefinition = "TEXT[]")
     private String[] amenities;
 
@@ -29,7 +30,4 @@ public class Hotel extends BaseEntity {
 
     @Embedded
     private HotelContactInfo contactInfo;
-
-    @ManyToOne
-    private User owner;
 }
