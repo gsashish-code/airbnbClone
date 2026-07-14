@@ -51,4 +51,10 @@ public class HotelController {
         Boolean isDeleted=hotelService.deleteHotelById(hotelId);
         return  ResponseEntity.ok(isDeleted);
     }
+    @PatchMapping("/{hotelId}")
+    public  ResponseEntity<Boolean> activateHotelStatus(@PathVariable Long hotelId,@RequestParam Boolean activate){
+      log.info("Attempting to update status to:{} with id: {}",activate,hotelId);
+        hotelService.activateHotel(hotelId,activate);
+        return ResponseEntity.ok(true);
+    }
 }

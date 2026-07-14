@@ -7,6 +7,7 @@ import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.type.SqlTypes;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 @Entity
 @Getter
@@ -18,13 +19,11 @@ public class Room extends  BaseEntity {
     @Column(nullable = false,precision = 10,scale = 2)
     private BigDecimal basePrice;
 
-    @JdbcTypeCode(SqlTypes.JSON)
     @Column(columnDefinition = "TEXT[]")
-    private String[] photos;
+    private List<String> photos;
 
-    @JdbcTypeCode(SqlTypes.JSON)
     @Column(columnDefinition = "TEXT[]")
-    private String[] amenities;
+    private List<String> amenities;
 
     @Column(nullable = false)
     private Integer totalCount;

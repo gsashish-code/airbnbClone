@@ -66,6 +66,7 @@ public class HotelServiceImpl implements HotelService {
         hotelRepository.deleteById(id);
         log.info("hotel with this id Deleted: {}",id);
         return isExists;
+        // TODO: update inventory related things
     }
 
     @Override
@@ -76,5 +77,18 @@ public class HotelServiceImpl implements HotelService {
                 .map(hotel -> modelMapper.map(hotel, HotelDto.class))
                 .toList();
         return hotelDtos;
+    }
+
+    @Override
+    public void activateHotel(Long id,Boolean status) {
+        log.info("trying to get user with particular id:{}",id);
+        Hotel hotel=hotelRepository.findById(id).orElseThrow(()->new ResourceNotFoundException("Hotel not found with this id:"+id));
+        if(!hotel.getActive().equals(status)) {
+            hotel.setActive(status);
+            hotelRepository.save(hotel);
+        }else{
+            log.info("status from db: {} trying to change:{} as status is same not calling db",hotel.getActive(),status);
+        }
+        // TODO: Create inventory for all rooms
     }
 }
