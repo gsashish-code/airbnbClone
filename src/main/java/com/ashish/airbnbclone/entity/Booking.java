@@ -2,9 +2,9 @@ package com.ashish.airbnbclone.entity;
 
 import com.ashish.airbnbclone.entity.enums.BookingStatus;
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Set;
@@ -12,6 +12,9 @@ import java.util.Set;
 @Entity
 @Getter
 @Setter
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
 public class Booking extends BaseEntity{
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -35,10 +38,6 @@ public class Booking extends BaseEntity{
     @Column(nullable = false)
     private  LocalDate checkOutDate;
 
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name="payment_id")
-    private  Payment payment;
-
     @Enumerated(EnumType.STRING)
     private BookingStatus bookingStatus;
 
@@ -49,4 +48,7 @@ public class Booking extends BaseEntity{
             inverseJoinColumns = @JoinColumn(name = "guest_id")
     )
     private Set<Guest> guests;
+
+    @Column(nullable = false,precision = 10,scale = 2)
+    private BigDecimal amount;
 }
