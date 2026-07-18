@@ -1,8 +1,7 @@
 package com.ashish.airbnbclone.entity;
 
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -14,6 +13,9 @@ import java.time.LocalDate;
         name = "hotel_room_unique_date",
         columnNames = {"hotel_id","room_id","date"}
 ))
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class Inventory extends  BaseEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)

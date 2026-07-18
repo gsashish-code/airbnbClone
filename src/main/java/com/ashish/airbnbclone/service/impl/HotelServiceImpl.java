@@ -2,9 +2,12 @@ package com.ashish.airbnbclone.service.impl;
 
 import com.ashish.airbnbclone.dto.HotelDto;
 import com.ashish.airbnbclone.entity.Hotel;
+import com.ashish.airbnbclone.entity.Room;
 import com.ashish.airbnbclone.exception.ResourceNotFoundException;
 import com.ashish.airbnbclone.repository.HotelRepository;
 import com.ashish.airbnbclone.service.HotelService;
+import com.ashish.airbnbclone.service.InventoryService;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
@@ -18,6 +21,7 @@ import java.util.List;
 public class HotelServiceImpl implements HotelService {
     private final HotelRepository hotelRepository;
     private final ModelMapper modelMapper;
+    private final InventoryService inventoryService;
 
     @Override
     public HotelDto createNewHotel(HotelDto hotelDto) {
@@ -41,6 +45,7 @@ public class HotelServiceImpl implements HotelService {
     }
 
     @Override
+    @Transactional
     public HotelDto updateHotelById(Long id, HotelDto hotelDto) {
         log.info("Updating Hotel By id: {} and payload: {}",id,hotelDto);
         Hotel hotel=hotelRepository.findById(id).orElseThrow(()-> new ResourceNotFoundException("Hotel with id not found:"+id));
@@ -54,19 +59,18 @@ public class HotelServiceImpl implements HotelService {
     }
 
     @Override
+    @Transactional
     public Boolean deleteHotelById(Long id) {
         log.info("Deleting Hotel By id: {} ",id);
-        Boolean isExists=hotelRepository.existsById(id);
-        if(!isExists){
-            log.info("No Hotel Found hotel with the id: {}",id);
-            return false;
-        }
+       Hotel hotel=hotelRepository.findById(id).orElseThrow(()->new ResourceNotFoundException("Hotel not found with this id:"+id));;
 
         log.info("Found hotel with the id: {}",id);
         hotelRepository.deleteById(id);
         log.info("hotel with this id Deleted: {}",id);
-        return isExists;
-        // TODO: update inventory related things
+        for(Room room:hotel.getRooms())
+            inventoryService.deleteFutureInventory(room);
+        return true;
+
     }
 
     @Override
@@ -80,6 +84,7 @@ public class HotelServiceImpl implements HotelService {
     }
 
     @Override
+    @Transactional
     public void activateHotel(Long id,Boolean status) {
         log.info("trying to get user with particular id:{}",id);
         Hotel hotel=hotelRepository.findById(id).orElseThrow(()->new ResourceNotFoundException("Hotel not found with this id:"+id));
@@ -89,6 +94,9 @@ public class HotelServiceImpl implements HotelService {
         }else{
             log.info("status from db: {} trying to change:{} as status is same not calling db",hotel.getActive(),status);
         }
-        // TODO: Create inventory for all rooms
+
+        for(Room room:hotel.getRooms()){
+            inventoryService.initializeRoomForAYear(room);
+        }
     }
 }
