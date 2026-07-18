@@ -32,6 +32,8 @@ public class Inventory extends  BaseEntity {
     @Column(nullable = false,columnDefinition = "INTEGER DEFAULT 0")
     private Integer bookedCount;
 
+    private Integer reservedCount;
+
     @Column(nullable = false)
     private Integer totalCount;
 
