@@ -16,7 +16,6 @@ import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
 @Service
@@ -70,7 +69,7 @@ public class RoomServiceImpl implements RoomService {
                 roomRepository
                         .findById(roomId)
                         .orElseThrow(()->new ResourceNotFoundException("Room with room id :"+roomId+" not found"));
-            inventoryService.deleteFutureInventory(room);
+            inventoryService.deleteAllInventory(room);
             roomRepository.deleteById(roomId);
     }
 }
