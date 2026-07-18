@@ -1,16 +1,14 @@
 package com.ashish.airbnbclone.dto;
 
-
+import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
-
-import java.util.List;
 
 @Data
 @AllArgsConstructor
 @Builder
 public class HotelInfoDto {
-    private HotelDto hotel;
-    private List<RoomDto> rooms;
+  private HotelDto hotel;
+  private List<RoomDto> rooms;
 }

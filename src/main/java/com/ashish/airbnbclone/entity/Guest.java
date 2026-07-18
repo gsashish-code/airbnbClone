@@ -2,29 +2,27 @@ package com.ashish.airbnbclone.entity;
 
 import com.ashish.airbnbclone.entity.enums.Gender;
 import jakarta.persistence.*;
+import java.util.Set;
 import lombok.Getter;
 import lombok.Setter;
-
-import java.util.Set;
 
 @Entity
 @Getter
 @Setter
-public class Guest extends  BaseEntity{
+public class Guest extends BaseEntity {
 
-    @ManyToOne
-    @JoinColumn(name = "user_id")
-    private User user;
+  @ManyToOne
+  @JoinColumn(name = "user_id")
+  private User user;
 
-    @Column(nullable = false)
-    private String name;
+  @Column(nullable = false)
+  private String name;
 
-    @Enumerated(EnumType.STRING)
-    private Gender gender;
+  @Enumerated(EnumType.STRING)
+  private Gender gender;
 
-    private  Integer age;
+  private Integer age;
 
-    @ManyToMany(mappedBy = "guests")
-    private Set<Booking> bookings;
+  @ManyToMany(mappedBy = "guests")
+  private Set<Booking> bookings;
 }
-

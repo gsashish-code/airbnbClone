@@ -1,51 +1,51 @@
 package com.ashish.airbnbclone.entity;
 
 import jakarta.persistence.*;
-import lombok.*;
-
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import lombok.*;
 
 @Entity
 @Getter
 @Setter
-@Table(uniqueConstraints = @UniqueConstraint(
-        name = "hotel_room_unique_date",
-        columnNames = {"hotel_id","room_id","date"}
-))
+@Table(
+    uniqueConstraints =
+        @UniqueConstraint(
+            name = "hotel_room_unique_date",
+            columnNames = {"hotel_id", "room_id", "date"}))
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class Inventory extends  BaseEntity {
+public class Inventory extends BaseEntity {
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "hotel_id",nullable = false)
-    private  Hotel hotel;
+  @ManyToOne(fetch = FetchType.LAZY)
+  @JoinColumn(name = "hotel_id", nullable = false)
+  private Hotel hotel;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name="room_id",nullable = false)
-    private  Room room;
+  @ManyToOne(fetch = FetchType.LAZY)
+  @JoinColumn(name = "room_id", nullable = false)
+  private Room room;
 
-    @Column(nullable = false)
-    private LocalDate date;
+  @Column(nullable = false)
+  private LocalDate date;
 
-    @Column(nullable = false,columnDefinition = "INTEGER DEFAULT 0")
-    private Integer bookedCount;
+  @Column(nullable = false, columnDefinition = "INTEGER DEFAULT 0")
+  private Integer bookedCount;
 
-    private Integer reservedCount;
+  private Integer reservedCount;
 
-    @Column(nullable = false)
-    private Integer totalCount;
+  @Column(nullable = false)
+  private Integer totalCount;
 
-    @Column(nullable = false,precision = 5,scale = 2)
-    private BigDecimal surgeFactor;
+  @Column(nullable = false, precision = 5, scale = 2)
+  private BigDecimal surgeFactor;
 
-    @Column(nullable = false,precision = 5,scale = 2)
-    private BigDecimal price; // base price * surgePrice
+  @Column(nullable = false, precision = 10, scale = 2)
+  private BigDecimal price; // base price * surgePrice
 
-    @Column(nullable = false)
-    private String city;
+  @Column(nullable = false)
+  private String city;
 
-    @Column(nullable = false)
-    private Boolean closed;
+  @Column(nullable = false)
+  private Boolean closed;
 }
